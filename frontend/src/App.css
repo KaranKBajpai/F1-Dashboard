@@ -76,3 +76,20 @@ body {
   color: #aaaaaa;
   margin-top: 4px;
 }
+
+.selectors {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+.selectors select {
+  background: #16213e;
+  color: white;
+  border: 1px solid #444;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+}

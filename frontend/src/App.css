@@ -93,3 +93,32 @@ body {
   font-size: 1rem;
   cursor: pointer;
 }
+
+/* Responsive grid: auto-fits as many ~260px columns as the screen allows */
+.race-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+  max-width: 1100px;
+  margin: 24px auto;
+}
+
+.race-card {
+  background: #16213e;
+  border-radius: 12px;
+  padding: 16px;
+  transition: transform 0.15s ease;
+}
+.race-card:hover { transform: translateY(-3px); }
+
+.race-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.race-round { font-size: 0.8rem; color: #9aa; text-transform: uppercase; letter-spacing: 0.05em; }
+.race-flag  { font-size: 1.4rem; }
+.race-name  { font-size: 1.05rem; margin: 10px 0 4px; }
+.race-date  { font-size: 0.8rem; color: #9aa; margin: 0 0 12px; }
+.race-winner   { font-size: 0.9rem; font-weight: 600; margin: 0; }
+.race-upcoming { font-size: 0.9rem; font-weight: 600; color: #ffb454; margin: 0; }

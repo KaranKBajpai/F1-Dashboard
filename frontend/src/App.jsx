@@ -40,13 +40,12 @@ function App() {
         <option value={2026}>2026</option>
       </select>
 
-      {/* Race list: loop over every race and render one <li> each */}
-      {/* Shows the winner if completed, otherwise "Upcoming" */}
-      <ul>
+      {/* Race grid: one RaceCard per race, laid out in a responsive grid */}
+      <div className="race-grid">
         {races.map(race => (
           <RaceCard key={race.round} race={race} />
         ))}
-      </ul>
+      </div>
     </div>
   )
 }

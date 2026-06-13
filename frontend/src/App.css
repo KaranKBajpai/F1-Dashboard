@@ -116,6 +116,13 @@ body {
   justify-content: space-between;
   align-items: center;
 }
+
+.race-card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
 .race-round { font-size: 0.8rem; color: #9aa; text-transform: uppercase; letter-spacing: 0.05em; }
 .race-flag  { font-size: 1.4rem; }
 .race-name  { font-size: 1.05rem; margin: 10px 0 4px; }

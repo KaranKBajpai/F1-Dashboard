@@ -114,3 +114,51 @@ def get_sessions(year: int):
         params={"year": year, "session_name": "Race"},
     )
     return response.json()
+
+@app.get("/race")
+def get_race(year: int, round: int):
+    # Fetch this one race's results from Jolpica
+    # The /results endpoint gives the finishing order for a single race
+    url = f"https://api.jolpi.ca/ergast/f1/{year}/{round}/results.json"
+    data = requests.get(url).json()
+
+    # Dig down to the race object inside Ergast's nested structure 
+    # Races is a list; There's only one race here, so we take [0]
+    race = data["MRData"]["RaceTable"]["Races"][0]
+
+    # Build a clean results list out of the raw Results array
+    # Each raw entry has nested Driver / Constructor / Time / FastestLap objects
+    results = []
+    for r in race["Results"]:
+
+        # Driver name and team come from their nested objects 
+        driver = r["Driver"]["givenName"] + " " + r["Driver"]["familyName"]
+        team = r["Constructor"]["name"]
+
+        # Time only exists for classified finishers; otherwise fall back to status
+        # ("if 'Time' in r" guards against the DNF case that has no Time object")
+        time = r["Time"]["time"] if "Time" in r else r["status"]
+
+        # FastestLap isn't always present either, so guard it the same way
+        fastest = r["FastestLap"]["Time"]["time"] if "FastestLap" in r else None
+
+        # Assemble one clean, render-ready driver object
+        results.append({
+            "position": int(r["position"]),
+            "driver": driver,
+            "team": team,
+            "teamColor": TEAM_COLORS.get(team, "FFFFFF"),
+            "time": time,
+            "points": int(r["points"]),
+            "fastestLap": fastest,
+            "grid": int(r["grid"]),
+        })
+
+    # Return clean data to the frontend - it never sees Ergast's raw shape
+    return {
+        "raceName": race["raceName"],
+        "season": race["season"],
+        "round": race["round"],
+        "results": results,
+    }
+

@@ -3,9 +3,9 @@
 // Wrapped in a Link so clicking navigates to that race's detail page
 import { Link } from "react-router-dom"
 
-function RaceCard({ race }) {
+function RaceCard({ race, year }) {
   return (
-    <Link to={`/race/${race.round}`} className="race-card-link">
+    <Link to={`/race/${year}/${race.round}`} className="race-card-link">
         <div className="race-card">
 
         {/* Top row: round label on the left, flag on the right */}

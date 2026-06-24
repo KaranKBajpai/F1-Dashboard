@@ -41,7 +41,7 @@ function Home() {
       {/* Race grid: one RaceCard per race, laid out in a responsive grid */}
       <div className="race-grid">
         {races.map(race => (
-          <RaceCard key={race.round} race={race} />
+          <RaceCard key={race.round} race={race} year={year}/>
         ))}
       </div>
     </div>

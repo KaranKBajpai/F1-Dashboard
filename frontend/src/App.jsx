@@ -12,8 +12,8 @@ function App () {
       <Routes>
         {/* URL "/" shows the Home page */}
         <Route path="/" element={<Home />} />
-        {/* "/race/:round" shows RaceDetail; :round is a placeholder matching any round number */}
-        <Route path="/race/:round" element={<RaceDetail />}/>
+        {/* "/race/:year/:round" — both season and round captured from the URL */}
+        <Route path="/race/:year/:round" element={<RaceDetail />}/>
       </Routes>
     </BrowserRouter>
   )

@@ -27,6 +27,15 @@ function RaceDetail () {
         return <p className='loading'>Loading race...</p>
     }
 
+    if (!race.hasResults) {
+        return (
+            <div className='app'>
+                <h1 className='title'>Race hasn't happened yet</h1>
+                <p className='subtitle'>{race.season} Season - Round {race.round}</p>
+            </div>
+        )
+    }
+
     return (
         <div className='app'>
             {/* Header: race name + season */}

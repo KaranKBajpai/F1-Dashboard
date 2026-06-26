@@ -124,7 +124,14 @@ def get_race(year: int, round: int):
 
     # Dig down to the race object inside Ergast's nested structure 
     # Races is a list; There's only one race here, so we take [0]
-    race = data["MRData"]["RaceTable"]["Races"][0]
+    # race = data["MRData"]["RaceTable"]["Races"][0]
+
+    races = data["MRData"]["RaceTable"]["Races"]
+
+    if not races:
+        return {"hasResults": False, "season": str(year), "round": str(round)}
+    
+    race = races[0]
 
     # Build a clean results list out of the raw Results array
     # Each raw entry has nested Driver / Constructor / Time / FastestLap objects
@@ -156,6 +163,7 @@ def get_race(year: int, round: int):
 
     # Return clean data to the frontend - it never sees Ergast's raw shape
     return {
+        "hasResults": True,
         "raceName": race["raceName"],
         "season": race["season"],
         "round": race["round"],

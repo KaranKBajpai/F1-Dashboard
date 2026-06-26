@@ -4,32 +4,40 @@
 import { Link } from "react-router-dom"
 
 function RaceCard({ race, year }) {
-  return (
-    <Link to={`/race/${year}/${race.round}`} className="race-card-link">
+
+    const cardContent = (
         <div className="race-card">
 
-        {/* Top row: round label on the left, flag on the right */}
-        <div className="race-card-top">
-            <span className="race-round">Round {race.round}</span>
-            <span className="race-flag">{race.flag}</span>
+            {/* Top row: round label on the left, flag on the right */}
+            <div className="race-card-top">
+                <span className="race-round">Round {race.round}</span>
+                <span className="race-flag">{race.flag}</span>
+            </div>
+
+            {/* Race name and date */}
+            <h2 className="race-name">{race.raceName}</h2>
+            <p className="race-date">{race.date}</p>
+
+            {/* Winner in their team color, or "Upcoming" if it hasn't happened */}
+            {race.winner ? (
+                <p className="race-winner" style={{ color: `#${race.winner.teamColor}` }}>
+                🏆 {race.winner.name}
+                </p>
+            ) : (
+                <p className="race-upcoming">Upcoming</p>
+            )}
+
         </div>
+    )
+    if (race.status === 'completed') {
+        return (
+            <Link to={`/race/${year}/${race.round}`} className="race-card-link">
+                {cardContent}
+            </Link>
+        )
+    }
 
-        {/* Race name and date */}
-        <h2 className="race-name">{race.raceName}</h2>
-        <p className="race-date">{race.date}</p>
-
-        {/* Winner in their team color, or "Upcoming" if it hasn't happened */}
-        {race.winner ? (
-            <p className="race-winner" style={{ color: `#${race.winner.teamColor}` }}>
-            🏆 {race.winner.name}
-            </p>
-        ) : (
-            <p className="race-upcoming">Upcoming</p>
-        )}
-
-        </div>
-    </Link>
-  )
+    return cardContent
 }
 
 export default RaceCard

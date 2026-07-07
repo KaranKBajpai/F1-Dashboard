@@ -97,23 +97,29 @@ def get_schedule(year: int):
 
     return result
 
-
+# /drivers endpoint: returns the season's drivers for the comparison dropdowns
+# Takes year as a query param, returns a clean list of { driverId, name }
 @app.get("/drivers")
-def get_drivers(session_key: int):
-    response = requests.get(
-        "https://api.openf1.org/v1/drivers",
-        params={"session_key": session_key},
-    )
-    return response.json()
+def get_drivers(year: int):
 
+    # Fetch the season's driver list from Jolpica
+    # A generous limit makes sure we get all ~20+ drivers in one page
+    url = f"https://api.jolpi.ca/ergast/f1/{year}/drivers.json?limit=100"
+    data = requests.get(url).json()
 
-@app.get("/sessions")
-def get_sessions(year: int):
-    response = requests.get(
-        "https://api.openf1.org/v1/sessions",
-        params={"year": year, "session_name": "Race"},
-    )
-    return response.json()
+    # Dig down to the Drivers list (note: DriverTable, not RaceTable)
+    drivers = data["MRData"]["DriverTable"]["Drivers"]
+
+    # Build a clean list: machine id + display name for each driver
+    result = []
+    for d in drivers:
+        result.append({
+            "driverId": d["driverId"],
+            "name": d["givenName"] + " " + d["familyName"],
+        })
+
+    # Return the clean list straight to the frontend
+    return result
 
 @app.get("/race")
 def get_race(year: int, round: int):
@@ -122,10 +128,7 @@ def get_race(year: int, round: int):
     url = f"https://api.jolpi.ca/ergast/f1/{year}/{round}/results.json"
     data = requests.get(url).json()
 
-    # Dig down to the race object inside Ergast's nested structure 
-    # Races is a list; There's only one race here, so we take [0]
-    # race = data["MRData"]["RaceTable"]["Races"][0]
-
+    # Dig down to the race object inside Ergast's nested structure
     races = data["MRData"]["RaceTable"]["Races"]
 
     if not races:

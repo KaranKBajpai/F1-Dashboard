@@ -173,3 +173,81 @@ def get_race(year: int, round: int):
         "results": results,
     }
 
+# /driver-stats endpoint: computes one driver's season stat line
+# Fetches the driver's whole season and tallies wins, podiums, points, etc.
+@app.get("/driver-stats")
+def get_driver_stats(year: int, driverId: str):
+
+    # Fetch this driver's entire season in one call
+    # The per-driver results endpoint returns every race they ran that season
+    url = f"https://api.jolpi.ca/ergast/f1/{year}/drivers/{driverId}/results.json?limit=100"
+    data = requests.get(url).json()
+
+    # Grab a list of races this driver took part in
+    races = data["MRData"]["RaceTable"]["Races"]
+
+    # Guard: no races (Driver didn't race this season) - return a clean signal
+    if not races:
+        return {"hasStats": False, "driverId": driverId}
+    
+    # Counters we'll add to as we walk the races
+    # They start at zero and accumulate across the whole season
+    wins = 0
+    podiums = 0
+    dnfs = 0
+    fastest_laps = 0
+    total_points = 0.0
+    finishes = [] # finishing positions, for best finish + average
+
+    # Walk every race and tally the driver's results
+    for race in races:
+        r = race["Results"][0] # This driver's own result in that race
+
+        # Points come as a string; add them up as numbers
+        total_points += float(r["points"])
+
+        # positionText is a number if classified, or "R" if retired
+        # Only count a finish when the driver actually classified 
+        if r["positionText"].isdigit():
+            pos = int (r["position"])
+            finishes.append(pos)
+            if pos == 1:
+                wins += 1
+            if pos <= 3:
+                podiums += 1
+        elif r["positionText"] == "R":
+            dnfs += 1
+
+        # Fastest Lap: present only sometimes; rank "1" means fastest lap of the race
+        if "FastestLap" in r and r["FastestLap"]["rank"] == "1":
+            fastest_laps += 1
+
+    # Best Finish = lowest position; average = mean of finishes
+    # Guard against a driver who never actually finished (empty list)
+    best_finish = min(finishes) if finishes else None
+    avg_finish = round (sum(finishes) / len(finishes), 1) if finishes else None
+
+    # Team + name come from the driver's most recent race (last in the race)
+    last = races[-1]["Results"][0]
+    team = last["Constructor"]["name"]
+    name = last["Driver"]["givenName"] + " " + last["Driver"]["familyName"]
+
+    # Clean points: Show a whole number when there are no half-points
+    points = int (total_points) if total_points == int (total_points) else total_points
+
+    # Return the clean, computed stat line
+    return {
+        "hasStats": True,
+        "driverId": driverId,
+        "name": name,
+        "team": team,
+        "teamColor": TEAM_COLORS.get(team, "FFFFFF"),
+        "races": len(races),
+        "wins": wins,
+        "podiums": podiums,
+        "points": points,
+        "bestFinish": best_finish,
+        "fastestLaps": fastest_laps,
+        "dnfs": dnfs,
+        "avgFinish": avg_finish,
+    }

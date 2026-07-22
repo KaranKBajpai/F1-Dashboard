@@ -2,6 +2,7 @@
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import Home from './Home'
 import RaceDetail from './RaceDetail'
+import DriverComparison from './DriverComparison'
 import './App.css'
 
 function App () {
@@ -14,6 +15,8 @@ function App () {
         <Route path="/" element={<Home />} />
         {/* "/race/:year/:round" — both season and round captured from the URL */}
         <Route path="/race/:year/:round" element={<RaceDetail />}/>
+        {/* "/compare" shows the Driver Comparison Page */}
+        <Route path="/compare" element={<DriverComparison />} />
       </Routes>
     </BrowserRouter>
   )

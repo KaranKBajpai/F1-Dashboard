@@ -123,6 +123,32 @@ body {
   display: block;
 }
 
+/* Put the two stat columns side by side instead of stacked */
+.compare-columns {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* Each column: fixed-ish width, boxed, centered text */
+.stat-column {
+  flex: 1;
+  max-width: 320px;
+  background: #1e2235;
+  border-radius: 10px;
+  padding: 16px 20px;
+  text-align: center;
+}
+
+/* Dropdowns in a row, centered, with breathing room below */
+.compare-selectors {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 28px;
+}
+
 .race-round { font-size: 0.8rem; color: #9aa; text-transform: uppercase; letter-spacing: 0.05em; }
 .race-flag  { font-size: 1.4rem; }
 .race-name  { font-size: 1.05rem; margin: 10px 0 4px; }

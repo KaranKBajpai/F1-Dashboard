@@ -149,6 +149,26 @@ body {
   margin-bottom: 28px;
 }
 
+/* Top nav, shown on every page */
+.navbar {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  padding: 16px 0;
+  border-bottom: 1px solid #2a2f45;
+  margin-bottom: 24px;
+}
+
+.nav-link {
+  color: #aab;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.nav-link:hover {
+  color: #fff;
+}
+
 .race-round { font-size: 0.8rem; color: #9aa; text-transform: uppercase; letter-spacing: 0.05em; }
 .race-flag  { font-size: 1.4rem; }
 .race-name  { font-size: 1.05rem; margin: 10px 0 4px; }

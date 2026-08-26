@@ -19,7 +19,8 @@ body {
 .title {
   font-size: 2.5rem;
   text-align: center;
-  margin-bottom: 8px;
+  margin-top: 0;
+  margin-bottom: 4px;
 }
 
 .subtitle {
@@ -123,22 +124,57 @@ body {
   display: block;
 }
 
-/* Put the two stat columns side by side instead of stacked */
-.compare-columns {
-  display: flex;
-  gap: 24px;
-  justify-content: center;
-  align-items: flex-start;
+/* Head-to-head comparison table */
+.compare-table {
+  max-width: 700px;
+  margin: 0 auto;
+  background: #1e2235;
+  border-radius: 12px;
+  padding: 8px 24px;
 }
 
-/* Each column: fixed-ish width, boxed, centered text */
-.stat-column {
-  flex: 1;
-  max-width: 320px;
-  background: #1e2235;
-  border-radius: 10px;
-  padding: 16px 20px;
+.compare-row {
+  display: grid;
+  grid-template-columns: 1fr 140px 1fr;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #2a2f45;
+  font-size: 18px;
+}
+
+.compare-row:last-child {
+  border-bottom: none;
+}
+
+.compare-header {
+  font-size: 22px;
+  font-weight: 700;
+  padding: 20px 0;
+}
+
+.compare-header span:first-child { text-align: left; }
+.compare-header span:last-child  { text-align: right; }
+
+.compare-row span:first-child { text-align: left; }
+.compare-row span:last-child  { text-align: right; }
+
+.compare-label {
   text-align: center;
+  color: #8891ab;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.stat-winner {
+  color: #4ade80;
+  font-weight: 700;
+}
+
+.compare-prompt {
+  text-align: center;
+  color: #8891ab;
+  margin-top: 40px;
 }
 
 /* Dropdowns in a row, centered, with breathing room below */
@@ -149,6 +185,32 @@ body {
   margin-bottom: 28px;
 }
 
+.compare-selectors select {
+  appearance: none;
+  background-color: #1e2235;
+  color: #e8e9f0;
+  border: 1px solid #2a2f45;
+  border-radius: 8px;
+  padding: 10px 36px 10px 14px;
+  font-size: 15px;
+  font-weight: 600;
+  min-width: 200px;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238891ab' stroke-width='2'%3e%3cpath d='M6 9l6 6 6-6'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+}
+
+.compare-selectors select:hover {
+  border-color: #4a5170;
+}
+
+.compare-selectors select:focus {
+  outline: none;
+  border-color: #6b74a0;
+}
+
 /* Top nav, shown on every page */
 .navbar {
   display: flex;
@@ -156,7 +218,7 @@ body {
   justify-content: center;
   padding: 16px 0;
   border-bottom: 1px solid #2a2f45;
-  margin-bottom: 24px;
+  margin-bottom: 12px;
 }
 
 .nav-link {
